@@ -1,0 +1,32 @@
+export const articles = [
+  {
+    id: 1,
+    category: 'LEADERSHIP',
+    categoryBg: '#003366',
+    image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=781&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    date: 'FEB 1, 2026',
+    readTime: '6 MIN READ',
+    title: 'The Art of Strategic Delegation in Modern Management',
+    content: 'Delegation is not just about offloading tasks; it\'s about empowering your team to reach new heights. In this editorial, we explore the delicate balance between oversight and...',
+  },
+  {
+    id: 2,
+    category: 'CULTURE',
+    categoryBg: '#003366',
+    image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8Zm9vZHxlbnwwfHwwfHx8MA%3D%3D',
+    date: 'JAN 28, 2026',
+    readTime: '8 MIN READ',
+    title: 'Building Resilient Corporate Cultures: A Recipe for Success',
+    content: 'Resilience is the cornerstone of any successful organization. Learn how to foster a culture that thrives under pressure and adapts to change with grace... A resilient corporate culture is...',
+  },
+  {
+    id: 3,
+    category: 'STRATEGY',
+    categoryBg: '#003366',
+    image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=999&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    date: 'JAN 20, 2026',
+    readTime: '5 MIN READ',
+    title: 'The Evolution of Remote Work in Management Consulting',
+    content: 'Remote work has transformed the management landscape. We dive into the strategies that keep teams connected across borders and time zones... The rise of remote work has...',
+  },
+]

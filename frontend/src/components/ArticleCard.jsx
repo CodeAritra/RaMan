@@ -1,0 +1,80 @@
+"use client";
+
+import { Calendar, Clock, Pencil, Trash2, ChevronRight } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+
+export function ArticleCard({ article }) {
+  return (
+    <div className="flex flex-col group transition-transform duration-300 ease-out hover:scale-[1.02]">
+      {/* Image Container */}
+      <div className="relative h-48 mb-6 rounded-xl overflow-hidden bg-gray-200">
+        {/* Actual Image */}
+        <Image
+          src={article.image}
+          alt={article.title}
+          fill
+          className="object-cover"
+          priority
+        />
+
+        {/* overlay */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(0,0,0,0.1), rgba(0,0,0,0.3))",
+          }}
+        />
+
+        {/* Category Badge */}
+        <div
+          className="absolute top-4 left-4 px-3 py-1 rounded font-bold text-xs text-white z-10"
+          style={{ backgroundColor: article.categoryBg }}
+        >
+          {article.category}
+        </div>
+      </div>
+
+      {/* Info */}
+      <div className="flex items-center gap-4 text-sm mb-4">
+        <div className="flex items-center gap-1 text-accent">
+          <Calendar className="w-4 h-4" />
+          <span className="font-semibold">{article.date}</span>
+        </div>
+        <div className="flex items-center gap-1 text-accent">
+          <Clock className="w-4 h-4" />
+          <span className="font-semibold">{article.readTime}</span>
+        </div>
+      </div>
+
+      {/* Title */}
+      <h3 className="text-xl font-bold text-foreground mb-3 leading-tight group-hover:text-primary">
+        {article.title}
+      </h3>
+
+      {/* Description */}
+      <p className="text-muted-foreground mb-6 grow">{article.content}</p>
+
+      {/* Footer */}
+      <div className="flex items-center justify-between pt-4 border-t border-border">
+        <Link href={`/${article.id}`}>
+          <button className="flex items-center gap-2 text-primary font-semibold cursor-pointer">
+            Read Article
+            <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1.5" />
+          </button>
+        </Link>
+        <div className="flex gap-3">
+          <Link href={`/post?id=${article.id}`}>
+            <button className="p-2 bg-muted hover:bg-primary hover:text-white rounded-lg transition text-foreground cursor-pointer">
+              <Pencil className="w-4 h-4" />
+            </button>
+          </Link>
+          <button className="p-2 bg-muted hover:bg-destructive hover:text-white rounded-lg transition text-destructive cursor-pointer">
+            <Trash2 className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
