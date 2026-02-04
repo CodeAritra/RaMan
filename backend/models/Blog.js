@@ -4,7 +4,8 @@ const blogSchema = new mongoose.Schema(
   {
     title: String,
     content: String,
-    category: String,
+    // category: String,
+    image: String,
     published: { type: Boolean, default: true }
   },
   { timestamps: true }

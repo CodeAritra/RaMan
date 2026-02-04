@@ -26,7 +26,7 @@ export function Hero() {
       </p>
 
       {/* CTA buttons */}
-      <div className="flex gap-6 items-center">
+      {/* <div className="flex gap-6 items-center">
         <button
           size="lg"
           className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8 py-3 rounded-lg flex items-center gap-2"
@@ -41,7 +41,7 @@ export function Hero() {
         >
           Latest Articles
         </button>
-      </div>
+      </div> */}
     </section>
   )
 }

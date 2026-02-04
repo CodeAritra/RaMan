@@ -1,36 +1,69 @@
 "use client";
 
-import React from "react";
-
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Upload, X } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-export function PostForm({ initialData, onSubmit, onCancel }) {
+export function PostForm({ initialData, onSubmit, loading }) {
   const isEdit = Boolean(initialData);
-
-  const [title, setTitle] = useState(initialData?.title || "");
-  const [category, setCategory] = useState(
-    initialData?.category || "Leadership",
-  );
-  const [content, setContent] = useState(initialData?.content || "");
-  const [previewImage, setPreviewImage] = useState(initialData?.image || null);
-  const [fileName, setFileName] = useState("");
-
   const router = useRouter();
 
-  const handleImageUpload = (e) => {
+  const [title, setTitle] = useState("");
+  // const [category, setCategory] = useState("Leadership");
+  const [content, setContent] = useState("");
+  const [previewImage, setPreviewImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
+  const [fileName, setFileName] = useState("");
+  const [uploading, setUploading] = useState(false);
+
+  // Sync data for edit
+  useEffect(() => {
+    if (!initialData) return;
+
+    setTitle(initialData.title || "");
+    // setCategory(initialData.category || "Leadership");
+    setContent(initialData.content || "");
+    setPreviewImage(initialData.image || null);
+    setImageUrl(initialData.image || "");
+  }, [initialData]);
+
+  const handleImageUpload = async (e) => {
     const file = e.target.files?.[0];
-    if (file) {
-      setFileName(file.name);
+    if (!file) return;
+
+    setUploading(true);
+
+    // upload to Cloudinary
+    const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+    const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", uploadPreset);
+
+    try {
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+        {
+          method: "POST",
+          body: formData,
+        },
+      );
+
+      const data = await res.json();
+      // preview immediately
       const reader = new FileReader();
       reader.onload = (event) => {
-        const result = event.target?.result;
-        setPreviewImage(result);
-        setImageUrl("");
+        setPreviewImage(event.target.result);
       };
       reader.readAsDataURL(file);
+      setFileName(file.name);
+      setImageUrl(data.secure_url);
+    } catch (err) {
+      console.error("Image upload failed", err);
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -41,7 +74,7 @@ export function PostForm({ initialData, onSubmit, onCancel }) {
   };
 
   const handleCancel = () => {
-    router.push("/");
+    router.back();
   };
 
   const handleSubmit = (e) => {
@@ -49,9 +82,9 @@ export function PostForm({ initialData, onSubmit, onCancel }) {
 
     onSubmit({
       title,
-      category,
+      // category,
       content,
-      image: previewImage,
+      image: imageUrl,
     });
   };
 
@@ -80,7 +113,7 @@ export function PostForm({ initialData, onSubmit, onCancel }) {
 
         {/* Form Card */}
         <div className="bg-card border border-border rounded-lg p-8">
-          <form className="space-y-8">
+          <form className="space-y-8" onSubmit={handleSubmit}>
             {/* Article Title */}
             <div>
               <label className="block text-sm font-semibold text-primary uppercase tracking-wide mb-3">
@@ -96,7 +129,7 @@ export function PostForm({ initialData, onSubmit, onCancel }) {
             </div>
 
             {/* Category */}
-            <div>
+            {/* <div>
               <label className="block text-sm font-semibold text-primary uppercase tracking-wide mb-3">
                 Category
               </label>
@@ -111,7 +144,7 @@ export function PostForm({ initialData, onSubmit, onCancel }) {
                 <option>Management</option>
                 <option>Innovation</option>
               </select>
-            </div>
+            </div> */}
 
             {/* Cover Image Upload */}
             <div>
@@ -132,7 +165,7 @@ export function PostForm({ initialData, onSubmit, onCancel }) {
                 >
                   <Upload className="w-5 h-5 mr-2 text-muted-foreground" />
                   <span className="text-foreground font-medium">
-                    {fileName || "Upload Image"}
+                    {fileName || (uploading ? "Uploading..." : "Upload Image")}
                   </span>
                 </label>
               </div>
@@ -143,12 +176,13 @@ export function PostForm({ initialData, onSubmit, onCancel }) {
               <div className="relative">
                 <div className="relative w-full h-64 bg-muted rounded-md overflow-hidden">
                   <Image
-                    src={previewImage || "/placeholder.svg"}
+                    src={previewImage}
                     alt="Preview"
                     fill
                     className="object-cover"
                   />
                 </div>
+
                 <button
                   type="button"
                   onClick={handleClearImage}
@@ -184,7 +218,8 @@ export function PostForm({ initialData, onSubmit, onCancel }) {
               </button>
               <button
                 type="submit"
-                className="px-6 py-2 bg-primary/95 text-primary-foreground rounded-md font-medium hover:bg-primary transition cursor-pointer"
+                disabled={uploading || loading}
+                className="px-6 py-2 bg-primary/95 text-primary-foreground rounded-md font-medium hover:bg-primary transition cursor-pointer disabled:opacity-60"
               >
                 {isEdit ? "Update" : "Publish"}
               </button>

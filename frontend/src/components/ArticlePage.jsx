@@ -1,16 +1,22 @@
-'use client'
+// import { articles } from "@/data"
+import { ArticleCard } from "./ArticleCard";
+import { API_BASE_URL } from "@/lib/url";
 
-import { articles } from "@/data"
-import { ArticleCard } from "./ArticleCard"
+export async function ArticlePage() {
+  const res = await fetch(`${API_BASE_URL}/api/blogs`);
+  if (!res.ok) {
+    throw new Error("Failed to fetch articles");
+  }
 
-export function ArticlePage() {
+  const articles = await res.json();
+  //  console.log("articles = ", articles);
   return (
     <section className="max-w-7xl mx-auto px-6 py-16">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {articles.map((article) => (
-          <ArticleCard key={article.id} article={article} />
+          <ArticleCard key={article._id} article={article}/>
         ))}
       </div>
     </section>
-  )
+  );
 }

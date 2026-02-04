@@ -1,10 +1,12 @@
 "use client";
 
+import { useAuth } from "@/context/AuthContext";
 import { LogIn, LogOut, Plus } from "lucide-react";
 import Link from "next/link";
 
 export function Header() {
-  const isLoggedIn = true;
+  // const isLoggedIn = false;
+  const {isLoggedIn , logout} = useAuth()
 
   return (
     <header className="border-b border-border sticky top-0 z-100 bg-background w-full">
@@ -28,12 +30,12 @@ export function Header() {
 
         {/* Navigation */}
         <nav className="flex items-center gap-4">
-          <button className="text-accent font-semibold hover:opacity-80 transition">
+          {/* <button className="text-accent font-semibold hover:opacity-80 transition">
             Home
           </button>
           <button className="text-foreground font-semibold hover:opacity-80 transition">
             Categories
-          </button>
+          </button> */}
           {isLoggedIn ? (
             <>
               <Link href="/post">
@@ -44,18 +46,17 @@ export function Header() {
                   Add Post <Plus className="h-5 w-5" />
                 </button>
               </Link>
-              <Link href="/post">
                 <button
                   size="lg"
                   className=" text-destructive hover:bg-destructive hover:text-primary-foreground duration-350 font-semibold px-5 py-2 rounded-lg flex items-center gap-1 cursor-pointer"
+                  onClick={logout}
                 >
                   Log Out <LogOut className="h-5 w-5" />
                 </button>
-              </Link>
             </>
           ) : (
             <>
-              <Link href="/post">
+              <Link href="/login">
                 <button
                   size="lg"
                   className="border border-primary text-primary hover:bg-primary hover:text-primary-foreground duration-300 font-semibold px-5 py-2 rounded-lg flex items-center gap-1 cursor-pointer"
