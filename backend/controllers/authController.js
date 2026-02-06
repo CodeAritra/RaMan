@@ -1,21 +1,44 @@
-const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+// ✅ hardcoded credentials (for now)
+const EDITOR_EMAIL = "editor@raman.com";
+
+// ✅ hashed ONCE and stored
+const HASHED_PASSWORD =
+  "$2b$10$V2cj64RkAD81GqlnNzxyle91xzaUlIeHFU9uEl6KqpoF3DNUEtcLW";
+
 exports.login = async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const user = await User.findOne({ email });
-  if (!user) return res.status(401).json({ msg: "Unauthorized" });
+    // 1️⃣ Check email
+    if (email !== EDITOR_EMAIL) {
+      return res.status(401).json({ msg: "Invalid credentials" });
+    }
 
-  const ok = await bcrypt.compare(password, user.password);
-  if (!ok) return res.status(401).json({ msg: "Wrong password" });
+    // 2️⃣ Compare plain password with stored hash
+    const isMatch = await bcrypt.compare(password, HASHED_PASSWORD);
 
-  const token = jwt.sign(
-    { id: user._id, role: user.role },
-    process.env.JWT_SECRET,
-    { expiresIn: "1d" },
-  );
+    if (!isMatch) {
+      return res.status(401).json({ msg: "Invalid credentials" });
+    }
 
-  res.json({ token, user });
+    // 3️⃣ Generate JWT
+    const token = jwt.sign(
+      { email, role: "editor" },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    // 4️⃣ Success response
+    res.status(200).json({
+      msg: "Login successful",
+      token
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: "Server error" });
+  }
 };
