@@ -11,7 +11,7 @@ export async function ArticlePage() {
   const articles = await res.json();
   //  console.log("articles = ", articles);
   return (
-    <section className="max-w-7xl mx-auto px-6 py-16">
+    <section id="blogs" className="max-w-7xl mx-auto px-6 pb-16 scroll-mt-35">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {articles.map((article) => (
           <ArticleCard key={article._id} article={article}/>
