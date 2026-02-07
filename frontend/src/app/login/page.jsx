@@ -36,6 +36,7 @@ export default function AdminLoginPage() {
       });
 
       const data = await res.json();
+      console.log("data = ",data)
 
       if (!res.ok) {
         throw new Error(data.message || "Login failed");

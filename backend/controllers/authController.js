@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const User = require("../models/User");
 
 // ✅ hardcoded credentials (for now)
 const EDITOR_EMAIL = "editor@raman.com";
@@ -17,6 +18,11 @@ exports.login = async (req, res) => {
       return res.status(401).json({ msg: "Invalid credentials" });
     }
 
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ msg: "Invalid user" });
+    }
+
     // 2️⃣ Compare plain password with stored hash
     const isMatch = await bcrypt.compare(password, HASHED_PASSWORD);
 
@@ -25,18 +31,16 @@ exports.login = async (req, res) => {
     }
 
     // 3️⃣ Generate JWT
-    const token = jwt.sign(
-      { email, role: "editor" },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
-    );
+    const token = jwt.sign({ email, role: "editor" }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
     // 4️⃣ Success response
     res.status(200).json({
       msg: "Login successful",
-      token
+      token,
+      user,
     });
-
   } catch (err) {
     console.error(err);
     res.status(500).json({ msg: "Server error" });

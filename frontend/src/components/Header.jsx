@@ -38,7 +38,7 @@ export function Header() {
           </button> */}
           {isLoggedIn ? (
             <>
-              <Link href="/post">
+              <Link href="/blog/post">
                 <button
                   size="lg"
                   className="border border-primary text-primary hover:bg-primary hover:text-primary-foreground duration-300 font-semibold px-5 py-2 rounded-lg flex items-center gap-1 cursor-pointer"

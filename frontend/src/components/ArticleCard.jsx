@@ -96,7 +96,7 @@ export function ArticleCard({ article }) {
 
       {/* Footer */}
       <div className="flex items-center justify-between pt-4 border-t border-border">
-        <Link href={`/${article._id}`}>
+        <Link href={`/blog/${article._id}`}>
           <button className="flex items-center gap-2 text-primary font-semibold cursor-pointer">
             Read Article
             <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1.5" />
@@ -104,7 +104,7 @@ export function ArticleCard({ article }) {
         </Link>
         {isLoggedIn && (
           <div className="flex gap-3">
-            <Link href={`/post?id=${article._id}`}>
+            <Link href={`/blog/post?id=${article._id}`}>
               <button className="p-2 bg-muted hover:bg-primary hover:text-white rounded-lg transition text-foreground cursor-pointer">
                 <Pencil className="w-4 h-4" />
               </button>
