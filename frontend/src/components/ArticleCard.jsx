@@ -28,7 +28,7 @@ export function ArticleCard({ article }) {
       });
 
       if (!res.ok) {
-        throw new Error("Failed tot delete article");
+        throw new Error("Failed to delete article");
       }
 
       toast.success("Article deleted", { id: toastId });
@@ -42,7 +42,7 @@ export function ArticleCard({ article }) {
   };
 
   return (
-    <div className="flex flex-col group transition-transform duration-300 ease-out hover:scale-[1.02]">
+    <div className="flex flex-col group transition-transform duration-300 ease-out hover:scale-[1.02] mb-13">
       {/* Image Container */}
       <div className="relative h-48 mb-6 rounded-xl overflow-hidden bg-gray-200">
         {/* Actual Image */}
@@ -92,7 +92,9 @@ export function ArticleCard({ article }) {
       </h3>
 
       {/* Description */}
-      <p className="text-muted-foreground mb-6 grow">{article.content}</p>
+      <p className="text-muted-foreground mb-6 grow">
+        {article.content.slice(0, 150) + "..."}
+      </p>
 
       {/* Footer */}
       <div className="flex items-center justify-between pt-4 border-t border-border">

@@ -13,9 +13,12 @@ export function BlogDetail({ blog, isAdmin }) {
       {/* Back link */}
       <button
         onClick={() => router.back()}
-        className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 mb-6 cursor-pointer"
+        className="group flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 mb-6 cursor-pointer"
       >
-        <ArrowLeft size={16} />
+        <ArrowLeft
+          size={16}
+          className="transition-transform duration-200 group-hover:-translate-x-1"
+        />
         Back to all articles
       </button>
 
