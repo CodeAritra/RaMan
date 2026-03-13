@@ -9,14 +9,21 @@ import toast from "react-hot-toast";
 import { useAuth } from "@/context/AuthContext";
 
 export default function Page() {
-  const searchParams = useSearchParams();
+  // const searchParams = useSearchParams();
+  const [postId, setPostId] = useState(null);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setPostId(params.get("id"));
+  }, []);
   const router = useRouter();
   // const { token } = useAuth();
 
-  const postId = searchParams.get("id");
+  // const postId = searchParams?.get("id") || null;
 
   const [initialData, setInitialData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [token, setToken] = useState(null);
 
   // Get token safely in browser
   useEffect(() => {
