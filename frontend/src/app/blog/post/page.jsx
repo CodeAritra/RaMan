@@ -18,7 +18,11 @@ export default function Page() {
   const [initialData, setInitialData] = useState(null);
   const [loading, setLoading] = useState(false);
 
-   const token = localStorage.getItem("token");
+  // Get token safely in browser
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken);
+  }, []);
 
   // Fetch post only in EDIT mode
   useEffect(() => {
@@ -57,7 +61,7 @@ export default function Page() {
           method: isEdit ? "PUT" : "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": token,
+            Authorization: token,
           },
           body: JSON.stringify(formData),
         },
